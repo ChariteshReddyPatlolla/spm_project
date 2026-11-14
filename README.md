@@ -150,7 +150,16 @@ spm_project/
 
 ## ⚡ Quick Start (Local Setup)
 
-### Prerequisites
+### 🚀 Windows One-Click Launch
+If you are on Windows, simply run or double-click **`start.bat`** in the root directory:
+```bat
+start.bat
+```
+This automatically launches the FastAPI backend, the React frontend, and opens [http://localhost:5173](http://localhost:5173) in your default browser.
+
+### Manual Setup
+
+#### Prerequisites
 - Python 3.11 (`uv` or `python` venv)
 - Node.js 18+ & npm
 - (Optional) [Ollama](https://ollama.com/) with `llama3` pulled (`ollama pull llama3`)
