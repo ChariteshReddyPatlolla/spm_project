@@ -1,0 +1,62 @@
+# =========================================================================
+# Multi-Paper Research Assistant (.gitignore)
+# Ensures only clean, necessary source code and config are tracked.
+# =========================================================================
+
+# Python virtual environment
+.venv/
+venv/
+env/
+ENV/
+*.venv/
+
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node & Frontend dependencies and builds
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+dist-ssr/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment secrets and local configurations
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Local runtime storage, vector DBs & SQLite database files
+storage/chroma/*
+!storage/chroma/.gitkeep
+storage/data/*
+!storage/data/.gitkeep
+storage/uploads/*
+!storage/uploads/.gitkeep
+
+*.db
+*.db-journal
+*.sqlite3
+*.sqlite3-journal
+*.sqlite
+*.sqlite-journal
+
+# IDE, OS, and temporary files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
