@@ -25,6 +25,8 @@ def query_understanding_node(state: ResearchState) -> Dict[str, Any]:
         q_type = "conversational"
     elif any(k in q_lower for k in ["thank you", "thanks", "great", "awesome", "good job"]):
         q_type = "conversational"
+    elif any(k in q_lower for k in ["what is rag", "what does rag stand for", "rag stand for", "full form of rag", "fullform of rag", "define rag"]):
+        q_type = "conversational"
     elif any(k in q_lower for k in [
         "what are the papers", "what papers do i have", "what papers are uploaded",
         "which papers are uploaded", "list my papers", "list papers", "my papers",
@@ -32,7 +34,9 @@ def query_understanding_node(state: ResearchState) -> Dict[str, Any]:
         "which paper am i", "which paper is", "what paper is", "what paper am i",
         "dealing currently with", "dealing with", "current paper", "active paper",
         "selected paper", "which papers am i", "what papers am i", "am i dealing with",
-        "currently dealing", "currently working with", "which paper"
+        "currently dealing", "currently working with", "which paper",
+        "what papers have i uploaded", "which papers have i uploaded", "papers have i uploaded",
+        "have i uploaded", "what papers did i upload", "what papers have i", "papers uploaded"
     ]):
         q_type = "meta_corpus"
     elif any(k in q_lower for k in [
@@ -87,7 +91,8 @@ def conversational_handler_node(state: ResearchState) -> Dict[str, Any]:
 
     if q_type == "meta_corpus" or any(k in q_lower for k in [
         "what are the papers", "what papers", "my papers", "list papers", "available papers",
-        "which paper", "dealing with", "dealing currently", "current paper", "active paper"
+        "which paper", "dealing with", "dealing currently", "current paper", "active paper",
+        "uploaded", "have i uploaded"
     ]):
         docs = []
         if db:
@@ -126,6 +131,14 @@ def conversational_handler_node(state: ResearchState) -> Dict[str, Any]:
             "I apologize if my previous answer was unclear! I am your AI Research Assistant. "
             "I can provide direct answers, technical summaries, and comparative analyses for your uploaded papers (e.g. *BERT* and *Attention Is All You Need*). "
             "Could you please specify which paper or technical question you would like me to answer?"
+        )
+
+    elif any(k in q_lower for k in ["what is rag", "what does rag stand for", "rag stand for", "full form of rag", "fullform of rag", "define rag"]):
+        response = (
+            "**RAG** stands for **Retrieval-Augmented Generation**.\n\n"
+            "It is an AI and NLP architectural framework that combines information retrieval (such as dense vector search and BM25) with generative language models. "
+            "Instead of relying solely on an LLM's static training weights, RAG dynamically retrieves factual excerpts from external documents (such as uploaded research papers) "
+            "and feeds them into the model's context to generate accurate, traceable, and citation-backed answers."
         )
 
     elif any(k in q_lower for k in ["thank you", "thanks", "great", "awesome", "good job", "cool"]):

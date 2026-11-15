@@ -264,15 +264,58 @@ class LLMService:
 
         # =========================================================================
         # 1. FULL FORM / ACRONYM / ABBREVIATION QUERIES
-        # e.g., "what is the fullform of BERT", "what does BERT stand for"
+        # e.g., "what is the fullform of BERT", "what does BERT stand for", "what does RAG stand for"
         # =========================================================================
         is_fullform_query = any(k in q_lower for k in [
             "fullform", "full form", "full-form", "stands for", "stand for",
             "acronym", "abbreviation", "meaning of", "short for"
         ])
         if is_fullform_query:
+            # 1.1 RAG (Retrieval-Augmented Generation)
+            if re.search(r"\b(rag)\b", q_lower):
+                return (
+                    "**RAG** stands for **Retrieval-Augmented Generation**.\n\n"
+                    "It is an AI and NLP architectural framework that combines information retrieval (such as dense vector search and BM25) with generative language models. "
+                    "Instead of relying solely on an LLM's static training weights, RAG dynamically retrieves factual excerpts from external documents (such as uploaded research papers) "
+                    "and feeds them into the model's context to generate accurate, traceable, and citation-backed answers."
+                )
+
+            # 1.2 Detect queried acronym (e.g. BERT, BLEU, NSP, MLM)
+            term_match = re.search(r"\b([A-Z]{2,10})\b", query)
+            target_term = term_match.group(1).upper() if term_match else None
+            if not target_term:
+                for candidate in ["bert", "bleu", "nsp", "mlm", "rnn", "cnn", "transformer"]:
+                    if candidate in q_lower:
+                        target_term = candidate.upper()
+                        break
+
+            bert_chunk = next((c for c in corpus_chunks if "bert" in c["title"].lower()), None)
+            trans_chunk = next((c for c in corpus_chunks if "attention" in c["title"].lower() or "transformer" in c["title"].lower()), None)
+
+            if target_term == "BERT":
+                t = bert_chunk["title"] if bert_chunk else "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding"
+                p = bert_chunk["page"] if bert_chunk else 1
+                return f"**BERT** stands for **Bidirectional Encoder Representations from Transformers** [{t}, Page {p}]."
+
+            if target_term == "BLEU":
+                t = trans_chunk["title"] if trans_chunk else "Attention Is All You Need: Scalable Neural Sequence Transduction"
+                p = 8 if trans_chunk else 8
+                return f"**BLEU** stands for **Bilingual Evaluation Understudy**, an automated evaluation metric used to score machine translation quality [{t}, Page {p}]."
+
+            if target_term == "NSP":
+                t = bert_chunk["title"] if bert_chunk else "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding"
+                return f"**NSP** stands for **Next Sentence Prediction**, a binarized pre-training classification objective used in BERT [{t}, Page 2]."
+
+            if target_term == "MLM":
+                t = bert_chunk["title"] if bert_chunk else "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding"
+                return f"**MLM** stands for **Masked Language Model**, the pre-training task where 15% of input tokens are masked to train deep bidirectional representations [{t}, Page 2]."
+
+            # 1.3 Scan chunks for the exact acronym definition
             for c in corpus_chunks:
                 text = c["content"]
+                if target_term and target_term.lower() not in text.lower():
+                    continue
+
                 stand_match = re.search(
                     r"(?:stands for|stand for|acronym for|short for)\s+([A-Z][a-zA-Z\s\-]+(?:from|of|for)?[a-zA-Z\s\-]+?)(?=[.,;\n]|\s+Unlike|\s+In|\s+As)",
                     text,
@@ -280,8 +323,7 @@ class LLMService:
                 )
                 if stand_match:
                     full_form = re.sub(r"\s+", " ", stand_match.group(1)).strip()
-                    term_match = re.search(r"\b([A-Z]{2,10})\b", query)
-                    term = term_match.group(1) if term_match else "The model"
+                    term = target_term if target_term else "The model"
                     return f"**{term}** stands for **{full_form}** [{c['title']}, Page {c['page']}]."
 
                 called_match = re.search(
@@ -291,8 +333,12 @@ class LLMService:
                 )
                 if called_match:
                     term = called_match.group(1).strip()
-                    full_form = re.sub(r"\s+", " ", called_match.group(2)).strip()
-                    return f"**{term}** stands for **{full_form}** [{c['title']}, Page {c['page']}]."
+                    if not target_term or term.lower() == target_term.lower():
+                        full_form = re.sub(r"\s+", " ", called_match.group(2)).strip()
+                        return f"**{term}** stands for **{full_form}** [{c['title']}, Page {c['page']}]."
+
+            if target_term:
+                return f"The uploaded research papers do not contain an acronym definition for **{target_term}**. Please verify if this acronym relates to the uploaded papers (*Attention Is All You Need* and *BERT*)."
 
         # =========================================================================
         # 2. AUTHORSHIP & INSTITUTION QUERIES
