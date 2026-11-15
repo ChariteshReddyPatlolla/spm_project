@@ -79,7 +79,10 @@ class SessionService:
         recent_messages.reverse()
 
         # If query has ordinal or deictic references, resolve them using paper titles
-        doc_records = db.query(Document).filter(Document.id.in_(selected_ids)).all() if selected_ids else []
+        if selected_ids:
+            doc_records = db.query(Document).filter(Document.id.in_(selected_ids)).all()
+        else:
+            doc_records = db.query(Document).all()
         paper_index_map = {idx + 1: d for idx, d in enumerate(doc_records)}
 
         resolved_query = raw_query
@@ -104,6 +107,7 @@ class SessionService:
                 resolved_query,
                 flags=re.IGNORECASE
             )
+            selected_ids = [doc_records[0].id]
 
         # Resolve "the second paper"
         if re.search(r"\b(second paper|2nd paper)\b", raw_query, re.IGNORECASE) and len(doc_records) >= 2:
@@ -114,6 +118,7 @@ class SessionService:
                 resolved_query,
                 flags=re.IGNORECASE
             )
+            selected_ids = [doc_records[1].id]
 
         # Resolve "that methodology" or "that architecture" from last assistant response
         if any(w in raw_query.lower() for w in ["that methodology", "that approach", "that architecture", "those results"]):
