@@ -1,0 +1,294 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 950" width="100%" height="100%" style="background:#090d16; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#6d28d9"/>
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#0e7490"/>
+    </linearGradient>
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+    <linearGradient id="amberGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#60a5fa"/>
+    </marker>
+    <marker id="arrowAmber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="arrowEmerald" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#34d399"/>
+    </marker>
+  </defs>
+
+  <!-- Title & Header -->
+  <rect x="0" y="0" width="1300" height="90" fill="#0f172a" opacity="0.8"/>
+  <text x="40" y="45" fill="#f8fafc" font-size="24" font-weight="800" letter-spacing="-0.5">Multi-Paper Research Assistant — System Architecture</text>
+  <text x="40" y="70" fill="#94a3b8" font-size="14" font-weight="500">Autonomous Agentic RAG System with LangGraph, Hybrid Retrieval &amp; Deterministic Citations</text>
+  <rect x="1080" y="30" width="180" height="32" rx="16" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <circle cx="1098" cy="46" r="6" fill="#10b981"/>
+  <text x="1115" y="51" fill="#cbd5e1" font-size="12" font-weight="600">PRODUCTION TIER</text>
+
+  <!-- 1. PRESENTATION LAYER (FRONTEND) -->
+  <g transform="translate(40, 115)">
+    <rect width="1220" height="135" rx="14" fill="#0f172a" stroke="#1e3a8a" stroke-width="1.5" filter="url(#cardShadow)"/>
+    <path d="M 0 14 Q 0 0 14 0 L 1206 0 Q 1220 0 1220 14 L 1220 32 L 0 32 Z" fill="url(#primaryGrad)"/>
+    <text x="20" y="22" fill="#ffffff" font-size="13" font-weight="700" letter-spacing="0.5">1. PRESENTATION LAYER — REACT 18 + VITE + TAILWIND CSS</text>
+
+    <!-- Sub-cards -->
+    <g transform="translate(20, 48)">
+      <rect width="215" height="70" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="15" y="26" fill="#60a5fa" font-size="12" font-weight="700">Research Command Center</text>
+      <text x="15" y="46" fill="#94a3b8" font-size="11">System Health Banners</text>
+      <text x="15" y="60" fill="#94a3b8" font-size="11">One-click Research Prompts</text>
+    </g>
+
+    <g transform="translate(260, 48)">
+      <rect width="215" height="70" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="15" y="26" fill="#60a5fa" font-size="12" font-weight="700">Document Library</text>
+      <text x="15" y="46" fill="#94a3b8" font-size="11">Concurrent Multi-PDF Upload</text>
+      <text x="15" y="60" fill="#94a3b8" font-size="11">Cascade Delete &amp; Card Metadata</text>
+    </g>
+
+    <g transform="translate(500, 48)">
+      <rect width="220" height="70" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="15" y="26" fill="#60a5fa" font-size="12" font-weight="700">Multi-Turn Research Chat</text>
+      <text x="15" y="46" fill="#94a3b8" font-size="11">LangGraph Execution Accordion</text>
+      <text x="15" y="60" fill="#94a3b8" font-size="11">Inline Clickable Citation Badges</text>
+    </g>
+
+    <g transform="translate(745, 48)">
+      <rect width="225" height="70" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="15" y="26" fill="#60a5fa" font-size="12" font-weight="700">Comparative Analysis Matrix</text>
+      <text x="15" y="46" fill="#94a3b8" font-size="11">9-Dimension Cross-Paper Grid</text>
+      <text x="15" y="60" fill="#94a3b8" font-size="11">Trade-offs &amp; Safeguards</text>
+    </g>
+
+    <g transform="translate(995, 48)">
+      <rect width="205" height="70" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="15" y="26" fill="#60a5fa" font-size="12" font-weight="700">Citation Drawer</text>
+      <text x="15" y="46" fill="#94a3b8" font-size="11">Ground-truth snippet viewer</text>
+      <text x="15" y="60" fill="#94a3b8" font-size="11">Direct PDF page linking</text>
+    </g>
+  </g>
+
+  <!-- Connectors from Layer 1 to Layer 2 -->
+  <line x1="370" y1="250" x2="370" y2="285" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="4,4"/>
+  <line x1="880" y1="250" x2="880" y2="285" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="490" y="272" fill="#64748b" font-size="11" font-family="monospace">REST API (Axios) / JSON Payloads</text>
+
+  <!-- 2. APPLICATION & API GATEWAY LAYER -->
+  <g transform="translate(40, 290)">
+    <rect width="1220" height="95" rx="14" fill="#0f172a" stroke="#581c87" stroke-width="1.5" filter="url(#cardShadow)"/>
+    <path d="M 0 14 Q 0 0 14 0 L 1206 0 Q 1220 0 1220 14 L 1220 28 L 0 28 Z" fill="url(#purpleGrad)"/>
+    <text x="20" y="19" fill="#ffffff" font-size="12" font-weight="700" letter-spacing="0.5">2. API GATEWAY &amp; SERVICE ORCHESTRATION — FASTAPI (ASYNC PYTHON 3.11)</text>
+
+    <g transform="translate(20, 38)">
+      <rect width="280" height="46" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="12" y="20" fill="#c084fc" font-size="11" font-weight="700">/api/v1/documents (Ingestion API)</text>
+      <text x="12" y="36" fill="#94a3b8" font-size="10">Multipart upload, OCR task, SHA-256 dedupe</text>
+    </g>
+
+    <g transform="translate(320, 38)">
+      <rect width="280" height="46" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="12" y="20" fill="#c084fc" font-size="11" font-weight="700">/api/v1/chat (Agentic Chat API)</text>
+      <text x="12" y="36" fill="#94a3b8" font-size="10">LangGraph invocation, follow-up query resolver</text>
+    </g>
+
+    <g transform="translate(620, 38)">
+      <rect width="280" height="46" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="12" y="20" fill="#c084fc" font-size="11" font-weight="700">/api/v1/comparative &amp; summary</text>
+      <text x="12" y="36" fill="#94a3b8" font-size="10">9-dimension matrix &amp; 11-dimension summaries</text>
+    </g>
+
+    <g transform="translate(920, 38)">
+      <rect width="280" height="46" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="12" y="20" fill="#c084fc" font-size="11" font-weight="700">Session &amp; Memory Service</text>
+      <text x="12" y="36" fill="#94a3b8" font-size="10">SQLite rolling summaries &amp; deictic resolution</text>
+    </g>
+  </g>
+
+  <!-- Connectors to Ingestion & Reasoning -->
+  <line x1="260" y1="385" x2="260" y2="420" stroke="#06b6d4" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="860" y1="385" x2="860" y2="420" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowAmber)"/>
+
+  <!-- 3. INGESTION PIPELINE (LEFT COLUMN) -->
+  <g transform="translate(40, 425)">
+    <rect width="450" height="340" rx="14" fill="#0f172a" stroke="#0e7490" stroke-width="1.5" filter="url(#cardShadow)"/>
+    <path d="M 0 14 Q 0 0 14 0 L 436 0 Q 450 0 450 14 L 450 28 L 0 28 Z" fill="url(#cyanGrad)"/>
+    <text x="18" y="19" fill="#ffffff" font-size="12" font-weight="700" letter-spacing="0.5">3. PDF INGESTION &amp; HYBRID INDEXING</text>
+
+    <!-- Stage 1 -->
+    <g transform="translate(20, 42)">
+      <rect width="410" height="52" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <circle cx="25" cy="26" r="12" fill="#0891b2"/>
+      <text x="21" y="30" fill="#ffffff" font-size="11" font-weight="700">1</text>
+      <text x="48" y="22" fill="#e2e8f0" font-size="12" font-weight="700">Multi-Column PyMuPDF Parser + OCR</text>
+      <text x="48" y="38" fill="#94a3b8" font-size="10">Layout bounding box sorting, Tesseract scanned OCR</text>
+    </g>
+
+    <!-- Stage 2 -->
+    <g transform="translate(20, 102)">
+      <rect width="410" height="52" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <circle cx="25" cy="26" r="12" fill="#0891b2"/>
+      <text x="21" y="30" fill="#ffffff" font-size="11" font-weight="700">2</text>
+      <text x="48" y="22" fill="#e2e8f0" font-size="12" font-weight="700">Structure Cleaner &amp; Table Extraction</text>
+      <text x="48" y="38" fill="#94a3b8" font-size="10">Regex header/footer removal, Markdown tables</text>
+    </g>
+
+    <!-- Stage 3 -->
+    <g transform="translate(20, 162)">
+      <rect width="410" height="52" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <circle cx="25" cy="26" r="12" fill="#0891b2"/>
+      <text x="21" y="30" fill="#ffffff" font-size="11" font-weight="700">3</text>
+      <text x="48" y="22" fill="#e2e8f0" font-size="12" font-weight="700">Structure-Aware Section Chunking</text>
+      <text x="48" y="38" fill="#94a3b8" font-size="10">500 tokens, 100 overlap, page/section tagged</text>
+    </g>
+
+    <!-- Stage 4 -->
+    <g transform="translate(20, 222)">
+      <rect width="410" height="52" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <circle cx="25" cy="26" r="12" fill="#0891b2"/>
+      <text x="21" y="30" fill="#ffffff" font-size="11" font-weight="700">4</text>
+      <text x="48" y="22" fill="#e2e8f0" font-size="12" font-weight="700">Dual Representation Indexing</text>
+      <text x="48" y="38" fill="#94a3b8" font-size="10">SentenceTransformers all-MiniLM-L6-v2 + BM25+</text>
+    </g>
+
+    <!-- Stage 5 -->
+    <g transform="translate(20, 282)">
+      <rect width="410" height="46" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <circle cx="25" cy="23" r="12" fill="#0891b2"/>
+      <text x="21" y="27" fill="#ffffff" font-size="11" font-weight="700">5</text>
+      <text x="48" y="20" fill="#e2e8f0" font-size="11" font-weight="700">Cross-Encoder Reranker</text>
+      <text x="48" y="34" fill="#94a3b8" font-size="10">ms-marco-MiniLM-L-6-v2 cross-attention score</text>
+    </g>
+  </g>
+
+  <!-- 4. AGENTIC REASONING CORE (RIGHT COLUMN) -->
+  <g transform="translate(515, 425)">
+    <rect width="745" height="340" rx="14" fill="#0f172a" stroke="#b45309" stroke-width="1.5" filter="url(#cardShadow)"/>
+    <path d="M 0 14 Q 0 0 14 0 L 731 0 Q 745 0 745 14 L 745 28 L 0 28 Z" fill="url(#amberGrad)"/>
+    <text x="18" y="19" fill="#ffffff" font-size="12" font-weight="700" letter-spacing="0.5">4. AGENTIC REASONING WORKFLOW — LANGGRAPH STATEGRAPH</text>
+
+    <!-- Node 1: Query Understanding -->
+    <g transform="translate(20, 42)">
+      <rect width="215" height="75" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.2"/>
+      <text x="12" y="22" fill="#fbbf24" font-size="11" font-weight="700">1. Query Understanding</text>
+      <text x="12" y="40" fill="#cbd5e1" font-size="10">Intent Classifier:</text>
+      <text x="12" y="54" fill="#94a3b8" font-size="9">Direct / Comparative / Summary</text>
+      <text x="12" y="66" fill="#94a3b8" font-size="9">Meta-corpus / Chit-chat</text>
+    </g>
+
+    <!-- Conditional Arrow to Conversational -->
+    <path d="M 235 65 L 270 65 L 270 145 L 290 145" stroke="#f59e0b" stroke-width="1.5" fill="none" marker-end="url(#arrowAmber)"/>
+    <text x="240" y="60" fill="#94a3b8" font-size="8">chit-chat / meta</text>
+
+    <!-- Node 2: Fast Path Handlers -->
+    <g transform="translate(295, 125)">
+      <rect width="200" height="55" rx="8" fill="#1e293b" stroke="#34d399" stroke-width="1"/>
+      <text x="10" y="20" fill="#34d399" font-size="10" font-weight="700">Conversational Handler</text>
+      <text x="10" y="34" fill="#94a3b8" font-size="9">Greetings, help, &amp; paper lists</text>
+      <text x="10" y="46" fill="#94a3b8" font-size="9">(Zero vector retrieval overhead)</text>
+    </g>
+
+    <!-- Node 3: Planning -->
+    <g transform="translate(20, 135)">
+      <rect width="215" height="60" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="12" y="22" fill="#e2e8f0" font-size="11" font-weight="700">2. Research Planning</text>
+      <text x="12" y="38" fill="#94a3b8" font-size="10">Generates 4-point strategy</text>
+      <text x="12" y="50" fill="#94a3b8" font-size="10">Subtask decomposition</text>
+    </g>
+
+    <!-- Node 4: Document Retrieval -->
+    <g transform="translate(20, 215)">
+      <rect width="215" height="55" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="12" y="20" fill="#e2e8f0" font-size="11" font-weight="700">3. Hybrid Retrieval Node</text>
+      <text x="12" y="34" fill="#94a3b8" font-size="10">Multi-query expansion &amp; RRF</text>
+      <text x="12" y="46" fill="#94a3b8" font-size="10">Cross-Encoder Sigmoid ranking</text>
+    </g>
+
+    <!-- Node 5: Evidence Extraction -->
+    <g transform="translate(270, 215)">
+      <rect width="215" height="55" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="12" y="20" fill="#e2e8f0" font-size="11" font-weight="700">4. Evidence Extraction</text>
+      <text x="12" y="34" fill="#94a3b8" font-size="10">Sentence-level fact units</text>
+      <text x="12" y="46" fill="#94a3b8" font-size="10">Mapped to exact page numbers</text>
+    </g>
+
+    <!-- Node 6: Answer Synthesis -->
+    <g transform="translate(515, 215)">
+      <rect width="215" height="55" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="12" y="20" fill="#e2e8f0" font-size="11" font-weight="700">5. Answer Synthesis</text>
+      <text x="12" y="34" fill="#94a3b8" font-size="10">Noise filter (_is_noise_sentence)</text>
+      <text x="12" y="46" fill="#94a3b8" font-size="10">Precision specialized resolvers</text>
+    </g>
+
+    <!-- Node 7: Citation Validator (Key Safeguard) -->
+    <g transform="translate(515, 105)">
+      <rect width="215" height="75" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+      <text x="12" y="22" fill="#34d399" font-size="11" font-weight="700">6. Citation Validation Layer</text>
+      <text x="12" y="38" fill="#cbd5e1" font-size="10">Format: [Paper Title, Page X]</text>
+      <text x="12" y="52" fill="#94a3b8" font-size="9">Verifies chunk text match</text>
+      <text x="12" y="66" fill="#94a3b8" font-size="9">Strips ungrounded claims</text>
+    </g>
+
+    <!-- Final Response Node -->
+    <g transform="translate(515, 42)">
+      <rect width="215" height="50" rx="8" fill="url(#emeraldGrad)" stroke="#059669" stroke-width="1"/>
+      <text x="12" y="22" fill="#ffffff" font-size="11" font-weight="800">7. Final Verified Response</text>
+      <text x="12" y="38" fill="#d1fae5" font-size="10">100% Attributed Research Answer</text>
+    </g>
+
+    <!-- Connecting Arrows in Graph -->
+    <line x1="127" y1="117" x2="127" y2="135" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arrowAmber)"/>
+    <line x1="127" y1="195" x2="127" y2="215" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arrowAmber)"/>
+    <line x1="235" y1="242" x2="270" y2="242" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arrowAmber)"/>
+    <line x1="485" y1="242" x2="515" y2="242" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arrowAmber)"/>
+    <line x1="622" y1="215" x2="622" y2="180" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowEmerald)"/>
+    <line x1="622" y1="105" x2="622" y2="92" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowEmerald)"/>
+  </g>
+
+  <!-- 5. STORAGE & PERSISTENCE LAYER (BOTTOM) -->
+  <g transform="translate(40, 785)">
+    <rect width="1220" height="135" rx="14" fill="#0f172a" stroke="#047857" stroke-width="1.5" filter="url(#cardShadow)"/>
+    <path d="M 0 14 Q 0 0 14 0 L 1206 0 Q 1220 0 1220 14 L 1220 28 L 0 28 Z" fill="url(#emeraldGrad)"/>
+    <text x="20" y="19" fill="#ffffff" font-size="12" font-weight="700" letter-spacing="0.5">5. STORAGE &amp; PERSISTENCE LAYER (LOCAL-FIRST &amp; SERVERLESS)</text>
+
+    <g transform="translate(25, 42)">
+      <rect width="365" height="75" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="15" y="24" fill="#34d399" font-size="12" font-weight="700">ChromaDB Vector Store</text>
+      <text x="15" y="42" fill="#94a3b8" font-size="11">Path: storage/chroma/chroma.sqlite3</text>
+      <text x="15" y="56" fill="#94a3b8" font-size="11">Embeddings: 384-dimensional normalized dense vectors</text>
+      <text x="15" y="70" fill="#94a3b8" font-size="11">Metadata: document_id, page_number, chunk_id</text>
+    </g>
+
+    <g transform="translate(425, 42)">
+      <rect width="370" height="75" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="15" y="24" fill="#34d399" font-size="12" font-weight="700">SQLite Relational Database</text>
+      <text x="15" y="42" fill="#94a3b8" font-size="11">Path: storage/data/research_assistant.db</text>
+      <text x="15" y="56" fill="#94a3b8" font-size="11">Tables: documents, chunks, summaries, sessions, messages</text>
+      <text x="15" y="70" fill="#94a3b8" font-size="11">Stores conversational memory &amp; comparative cache</text>
+    </g>
+
+    <g transform="translate(830, 42)">
+      <rect width="365" height="75" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="15" y="24" fill="#34d399" font-size="12" font-weight="700">Local Artifacts &amp; Filesystem</text>
+      <text x="15" y="42" fill="#94a3b8" font-size="11">Path: storage/uploads/</text>
+      <text x="15" y="56" fill="#94a3b8" font-size="11">Original uploaded PDFs &amp; extracted OCR text files</text>
+      <text x="15" y="70" fill="#94a3b8" font-size="11">Served securely via FastAPI StaticFiles endpoint</text>
+    </g>
+  </g>
+</svg>
