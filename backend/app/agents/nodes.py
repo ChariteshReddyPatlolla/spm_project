@@ -28,7 +28,11 @@ def query_understanding_node(state: ResearchState) -> Dict[str, Any]:
     elif any(k in q_lower for k in [
         "what are the papers", "what papers do i have", "what papers are uploaded",
         "which papers are uploaded", "list my papers", "list papers", "my papers",
-        "show papers", "available papers", "what papers i have", "what papers are there"
+        "show papers", "available papers", "what papers i have", "what papers are there",
+        "which paper am i", "which paper is", "what paper is", "what paper am i",
+        "dealing currently with", "dealing with", "current paper", "active paper",
+        "selected paper", "which papers am i", "what papers am i", "am i dealing with",
+        "currently dealing", "currently working with", "which paper"
     ]):
         q_type = "meta_corpus"
     elif any(k in q_lower for k in [
@@ -81,7 +85,10 @@ def conversational_handler_node(state: ResearchState) -> Dict[str, Any]:
     selected_doc_ids = state.get("selected_document_ids", [])
     steps = state.get("steps_taken", [])
 
-    if q_type == "meta_corpus" or any(k in q_lower for k in ["what are the papers", "what papers", "my papers", "list papers", "available papers"]):
+    if q_type == "meta_corpus" or any(k in q_lower for k in [
+        "what are the papers", "what papers", "my papers", "list papers", "available papers",
+        "which paper", "dealing with", "dealing currently", "current paper", "active paper"
+    ]):
         docs = []
         if db:
             if selected_doc_ids:
@@ -102,10 +109,12 @@ def conversational_handler_node(state: ResearchState) -> Dict[str, Any]:
                     raw_authors = []
                 clean_authors = [str(a).strip() for a in raw_authors if a and str(a).strip() and str(a).strip() not in ['[', ']', ',']]
                 authors_str = f" (by {', '.join(clean_authors[:3])})" if clean_authors else ""
-                paper_list.append(f"{idx}. 📄 **{d.title}** ({d.page_count} pages{authors_str})")
+                year_str = f", {d.year}" if d.year else ""
+                paper_list.append(f"{idx}. 📄 **{d.title}** ({d.page_count} pages{year_str}{authors_str})")
 
+            verb = "are currently dealing with" if any(w in q_lower for w in ["dealing", "current", "active", "working"]) else "currently have"
             response = (
-                f"You currently have **{len(docs)} research paper(s)** loaded in your active workspace:\n\n"
+                f"You {verb} **{len(docs)} research paper(s)** loaded in your active workspace:\n\n"
                 + "\n".join(paper_list)
                 + "\n\nYou can ask me specific questions about either paper (e.g. architecture, benchmarks, datasets) or ask me to compare them!"
             )

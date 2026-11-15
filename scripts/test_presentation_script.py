@@ -27,3 +27,4 @@ for label, query in test_suite:
     print(f"   Output: {first_line[:95]}")
     print(f"   Citations: {c_count}")
     print(f"   Steps: {[s.get('step_name') for s in data.get('agent_steps', [])]}\n")
+

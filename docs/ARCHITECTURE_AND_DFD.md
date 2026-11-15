@@ -270,3 +270,4 @@ During development and live testing, several critical technical hurdles arose. H
    Integrate 4-bit and 8-bit quantized models (e.g., Llama 3 8B, Qwen 2.5 7B) through native llama.cpp bindings to eliminate any external Ollama daemon dependency.
 4. **Scholarly Export Formats:**  
    Add one-click export of structured summaries and comparative matrices into LaTeX manuscripts (`.tex`), BibTeX citations (`.bib`), and Obsidian / Notion Markdown vaults.
+
