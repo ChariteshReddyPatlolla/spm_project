@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: multi-paper-research-assistant
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: oregon
+    healthCheckPath: /health
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-1.5-flash
+      - key: LLM_PROVIDER
+        value: gemini
+      - key: ENABLE_OCR
+        value: "true"
+      - key: DEBUG
+        value: "false"
+

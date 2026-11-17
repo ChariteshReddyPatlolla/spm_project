@@ -15,12 +15,19 @@ class Settings(BaseSettings):
     CHROMA_DIR: str = str(BASE_DIR / "storage" / "chroma")
     DATA_DIR: str = str(BASE_DIR / "storage" / "data")
     DATABASE_URL: str = f"sqlite:///{BASE_DIR}/storage/data/research_assistant.db"
+    FRONTEND_DIST: str = str(BASE_DIR / "frontend" / "dist")
 
-    # LLM & Embeddings
+    # LLM & Cloud Settings (Gemini & Ollama)
+    LLM_PROVIDER: str = "gemini"  # "gemini" or "ollama"
+    GEMINI_API_KEY: str = ""
+    GEMINI_MODEL: str = "gemini-1.5-flash"
     OLLAMA_BASE_URL: str = "http://localhost:11434"
     OLLAMA_MODEL: str = "llama3"
     EMBEDDING_MODEL_NAME: str = "all-MiniLM-L6-v2"
     RERANKER_MODEL_NAME: str = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+
+    # Server Port (Render sets $PORT dynamically)
+    PORT: int = 8000
 
     # RAG Settings
     DEFAULT_CHUNK_SIZE: int = 800

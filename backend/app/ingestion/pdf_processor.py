@@ -95,7 +95,10 @@ class PDFProcessor:
         - Extract metadata (title, authors, abstract, year)
         - Commit Document and DocumentPage rows
         """
-        import fitz  # PyMuPDF
+        try:
+            import pymupdf as fitz
+        except ImportError:
+            import fitz
 
         file_hash = cls.calculate_file_hash(file_bytes)
 

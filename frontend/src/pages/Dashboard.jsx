@@ -104,7 +104,7 @@ export const Dashboard = () => {
         <div className="flex items-center gap-4 text-xs text-slate-300">
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700/60">
             <Cpu className="w-3.5 h-3.5 text-indigo-400" />
-            <span>LLM: <strong className="text-white">{systemStatus?.ollama_connected ? systemStatus.ollama_model : 'Local Neural Engine'}</strong></span>
+            <span>LLM: <strong className="text-white">{systemStatus?.llm_connected ? (systemStatus.llm_provider === 'gemini' ? `Gemini (${systemStatus.llm_model})` : systemStatus.llm_model) : (systemStatus?.ollama_connected ? systemStatus.ollama_model : 'Local Neural Engine')}</strong></span>
           </div>
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700/60">
             <Database className="w-3.5 h-3.5 text-emerald-400" />

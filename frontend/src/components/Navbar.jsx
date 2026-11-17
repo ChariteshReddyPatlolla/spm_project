@@ -23,18 +23,26 @@ export const Navbar = () => {
       </div>
 
       <div className="flex items-center gap-4">
-        {/* Ollama Status Pill */}
+        {/* LLM Engine Status Pill */}
         <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700/80 text-xs">
           <Cpu className="w-3.5 h-3.5 text-slate-400" />
-          <span className="text-slate-400">LLM Engine:</span>
-          <span className="text-slate-200 font-medium">{systemStatus?.ollama_model || 'llama3'}</span>
+          <span className="text-slate-400">LLM:</span>
+          <span className="text-slate-200 font-medium">
+            {systemStatus?.llm_model || systemStatus?.gemini_model || systemStatus?.ollama_model || 'Gemini 1.5 Flash'}
+          </span>
           <span
             className={`w-2 h-2 rounded-full ${
-              systemStatus?.ollama_connected
+              (systemStatus?.llm_connected || systemStatus?.gemini_connected || systemStatus?.ollama_connected)
                 ? 'bg-emerald-500 shadow-sm shadow-emerald-500/50'
                 : 'bg-amber-500'
             }`}
-            title={systemStatus?.ollama_connected ? 'Ollama Online' : 'Local Synthesis Active'}
+            title={
+              (systemStatus?.llm_connected || systemStatus?.gemini_connected)
+                ? (systemStatus?.llm_provider === 'gemini' ? 'Gemini API Online (Google Cloud)' : 'LLM Online')
+                : systemStatus?.ollama_connected
+                ? 'Ollama Online'
+                : 'Local Synthesis Active'
+            }
           />
         </div>
 

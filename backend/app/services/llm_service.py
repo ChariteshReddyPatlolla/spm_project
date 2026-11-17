@@ -8,43 +8,145 @@ from backend.app.core.logging import logger
 class LLMService:
     def __init__(
         self,
-        base_url: str = settings.OLLAMA_BASE_URL,
-        model: str = settings.OLLAMA_MODEL
+        provider: str = settings.LLM_PROVIDER,
+        gemini_api_key: str = settings.GEMINI_API_KEY,
+        gemini_model: str = settings.GEMINI_MODEL,
+        ollama_base_url: str = settings.OLLAMA_BASE_URL,
+        ollama_model: str = settings.OLLAMA_MODEL,
     ):
-        self.base_url = base_url.rstrip("/")
-        self.model = model
+        self.provider = (provider or "gemini").lower()
+        self.gemini_api_key = (gemini_api_key or settings.GEMINI_API_KEY or "").strip()
+        self.gemini_model = gemini_model or settings.GEMINI_MODEL or "gemini-1.5-flash"
+        self.ollama_base_url = (ollama_base_url or settings.OLLAMA_BASE_URL).rstrip("/")
+        self.ollama_model = ollama_model or settings.OLLAMA_MODEL or "llama3"
         self._last_check_time = 0.0
-        self._is_online = None
+        self._is_ollama_online = None
+
+    def is_gemini_configured(self) -> bool:
+        key = (self.gemini_api_key or settings.GEMINI_API_KEY or "").strip()
+        return bool(key and key != "YOUR_GEMINI_API_KEY" and len(key) > 10)
+
+    def is_gemini_available_sync(self) -> bool:
+        return self.is_gemini_configured()
+
+    async def is_gemini_available(self) -> bool:
+        return self.is_gemini_configured()
 
     def is_ollama_online_sync(self) -> bool:
         """Fast check with 1.0s timeout, cached for 15s."""
         import time
         now = time.time()
-        if self._is_online is not None and (now - self._last_check_time) < 15.0:
-            return self._is_online
+        if self._is_ollama_online is not None and (now - self._last_check_time) < 15.0:
+            return self._is_ollama_online
 
         try:
             with httpx.Client(timeout=1.0) as client:
-                res = client.get(f"{self.base_url}/api/tags")
-                self._is_online = (res.status_code == 200)
+                res = client.get(f"{self.ollama_base_url}/api/tags")
+                self._is_ollama_online = (res.status_code == 200)
         except Exception:
-            self._is_online = False
+            self._is_ollama_online = False
 
         self._last_check_time = now
-        return self._is_online
+        return self._is_ollama_online
 
     async def is_ollama_available(self) -> bool:
         return self.is_ollama_online_sync()
 
-    async def generate(self, prompt: str, system: Optional[str] = None, temperature: float = 0.1) -> str:
-        """
-        Generate completion from Ollama LLM if available, with high-accuracy local research synthesis engine fallback.
-        """
-        if not self.is_ollama_online_sync():
-            return self._synthesize_research_answer(prompt)
+    def get_active_provider_info(self) -> Dict[str, Any]:
+        gemini_ready = self.is_gemini_configured()
+        ollama_ready = self.is_ollama_online_sync()
 
+        if self.provider == "gemini" and gemini_ready:
+            return {"provider": "gemini", "model": self.gemini_model, "connected": True}
+        elif self.provider == "ollama" and ollama_ready:
+            return {"provider": "ollama", "model": self.ollama_model, "connected": True}
+        elif gemini_ready:
+            return {"provider": "gemini", "model": self.gemini_model, "connected": True}
+        elif ollama_ready:
+            return {"provider": "ollama", "model": self.ollama_model, "connected": True}
+        else:
+            return {"provider": "local", "model": "Local Research Engine", "connected": False}
+
+    def _get_gemini_endpoint_and_payload(self, prompt: str, system: Optional[str] = None, temperature: float = 0.1):
+        clean_model = self.gemini_model
+        if clean_model.startswith("models/"):
+            clean_model = clean_model[len("models/"):]
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{clean_model}:generateContent"
+        api_key = (self.gemini_api_key or settings.GEMINI_API_KEY or "").strip()
+
+        headers = {
+            "Content-Type": "application/json",
+            "x-goog-api-key": api_key,
+        }
+        params = {"key": api_key}
+
+        payload: Dict[str, Any] = {
+            "contents": [
+                {
+                    "parts": [{"text": prompt}]
+                }
+            ],
+            "generationConfig": {
+                "temperature": temperature,
+                "maxOutputTokens": 4096,
+            }
+        }
+        if system:
+            payload["systemInstruction"] = {
+                "parts": [{"text": system}]
+            }
+
+        return url, headers, params, payload
+
+    def _extract_gemini_text(self, response_data: Dict[str, Any]) -> Optional[str]:
+        if "error" in response_data:
+            err_msg = response_data["error"].get("message", str(response_data["error"]))
+            logger.warning(f"Gemini API returned error response: {err_msg}")
+            return None
+
+        candidates = response_data.get("candidates", [])
+        if not candidates:
+            return None
+
+        first = candidates[0]
+        content = first.get("content", {})
+        parts = content.get("parts", [])
+        text = "".join([p.get("text", "") for p in parts if isinstance(p, dict) and "text" in p]).strip()
+        return text if text else None
+
+    async def _call_gemini_async(self, prompt: str, system: Optional[str] = None, temperature: float = 0.1) -> Optional[str]:
+        url, headers, params, payload = self._get_gemini_endpoint_and_payload(prompt, system, temperature)
+        try:
+            async with httpx.AsyncClient(timeout=45.0) as client:
+                res = await client.post(url, headers=headers, params=params, json=payload)
+                if res.status_code == 200:
+                    text = self._extract_gemini_text(res.json())
+                    if text:
+                        return text
+                else:
+                    logger.warning(f"Gemini API HTTP {res.status_code}: {res.text[:300]}")
+        except Exception as e:
+            logger.warning(f"Gemini API async request failed: {e}")
+        return None
+
+    def _call_gemini_sync(self, prompt: str, system: Optional[str] = None, temperature: float = 0.1) -> Optional[str]:
+        url, headers, params, payload = self._get_gemini_endpoint_and_payload(prompt, system, temperature)
+        try:
+            with httpx.Client(timeout=45.0) as client:
+                res = client.post(url, headers=headers, params=params, json=payload)
+                if res.status_code == 200:
+                    text = self._extract_gemini_text(res.json())
+                    if text:
+                        return text
+                else:
+                    logger.warning(f"Gemini API HTTP {res.status_code}: {res.text[:300]}")
+        except Exception as e:
+            logger.warning(f"Gemini API sync request failed: {e}")
+        return None
+
+    async def _call_ollama_async(self, prompt: str, system: Optional[str] = None, temperature: float = 0.1) -> Optional[str]:
         payload = {
-            "model": self.model,
+            "model": self.ollama_model,
             "prompt": prompt,
             "stream": False,
             "options": {"temperature": temperature}
@@ -54,22 +156,16 @@ class LLMService:
 
         try:
             async with httpx.AsyncClient(timeout=30.0) as client:
-                response = await client.post(f"{self.base_url}/api/generate", json=payload)
+                response = await client.post(f"{self.ollama_base_url}/api/generate", json=payload)
                 if response.status_code == 200:
-                    data = response.json()
-                    return data.get("response", "").strip()
+                    return response.json().get("response", "").strip()
         except Exception as e:
-            logger.warning(f"Ollama call failed ({e}). Proceeding to precision synthesis engine.")
+            logger.warning(f"Ollama async call failed: {e}")
+        return None
 
-        return self._synthesize_research_answer(prompt)
-
-    def generate_sync(self, prompt: str, system: Optional[str] = None, temperature: float = 0.1) -> str:
-        """Synchronous version for non-async worker steps."""
-        if not self.is_ollama_online_sync():
-            return self._synthesize_research_answer(prompt)
-
+    def _call_ollama_sync(self, prompt: str, system: Optional[str] = None, temperature: float = 0.1) -> Optional[str]:
         payload = {
-            "model": self.model,
+            "model": self.ollama_model,
             "prompt": prompt,
             "stream": False,
             "options": {"temperature": temperature}
@@ -79,11 +175,41 @@ class LLMService:
 
         try:
             with httpx.Client(timeout=30.0) as client:
-                response = client.post(f"{self.base_url}/api/generate", json=payload)
+                response = client.post(f"{self.ollama_base_url}/api/generate", json=payload)
                 if response.status_code == 200:
                     return response.json().get("response", "").strip()
         except Exception as e:
-            logger.warning(f"Ollama sync call failed ({e}). Using precision synthesis engine.")
+            logger.warning(f"Ollama sync call failed: {e}")
+        return None
+
+    async def generate(self, prompt: str, system: Optional[str] = None, temperature: float = 0.1) -> str:
+        """
+        Generate completion using Gemini API (preferred for cloud / Render deployment),
+        with fallback to local Ollama and high-accuracy local research synthesis engine.
+        """
+        if self.is_gemini_configured() and self.provider != "ollama":
+            gemini_result = await self._call_gemini_async(prompt, system, temperature)
+            if gemini_result:
+                return gemini_result
+
+        if self.is_ollama_online_sync():
+            ollama_result = await self._call_ollama_async(prompt, system, temperature)
+            if ollama_result:
+                return ollama_result
+
+        return self._synthesize_research_answer(prompt)
+
+    def generate_sync(self, prompt: str, system: Optional[str] = None, temperature: float = 0.1) -> str:
+        """Synchronous version for non-async worker steps."""
+        if self.is_gemini_configured() and self.provider != "ollama":
+            gemini_result = self._call_gemini_sync(prompt, system, temperature)
+            if gemini_result:
+                return gemini_result
+
+        if self.is_ollama_online_sync():
+            ollama_result = self._call_ollama_sync(prompt, system, temperature)
+            if ollama_result:
+                return ollama_result
 
         return self._synthesize_research_answer(prompt)
 
