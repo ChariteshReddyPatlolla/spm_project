@@ -25,6 +25,7 @@ class Settings(BaseSettings):
     OLLAMA_MODEL: str = "llama3"
     EMBEDDING_MODEL_NAME: str = "all-MiniLM-L6-v2"
     RERANKER_MODEL_NAME: str = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+    LIGHTWEIGHT_MODE: bool = True  # High-speed semantic engine optimized for cloud / Render (prevents OOM & CPU lag)
 
     # Server Port (Render sets $PORT dynamically)
     PORT: int = 8000

@@ -117,7 +117,7 @@ class LLMService:
     async def _call_gemini_async(self, prompt: str, system: Optional[str] = None, temperature: float = 0.1) -> Optional[str]:
         url, headers, params, payload = self._get_gemini_endpoint_and_payload(prompt, system, temperature)
         try:
-            async with httpx.AsyncClient(timeout=45.0) as client:
+            async with httpx.AsyncClient(timeout=20.0) as client:
                 res = await client.post(url, headers=headers, params=params, json=payload)
                 if res.status_code == 200:
                     text = self._extract_gemini_text(res.json())
@@ -132,7 +132,7 @@ class LLMService:
     def _call_gemini_sync(self, prompt: str, system: Optional[str] = None, temperature: float = 0.1) -> Optional[str]:
         url, headers, params, payload = self._get_gemini_endpoint_and_payload(prompt, system, temperature)
         try:
-            with httpx.Client(timeout=45.0) as client:
+            with httpx.Client(timeout=20.0) as client:
                 res = client.post(url, headers=headers, params=params, json=payload)
                 if res.status_code == 200:
                     text = self._extract_gemini_text(res.json())
@@ -192,7 +192,8 @@ class LLMService:
             if gemini_result:
                 return gemini_result
 
-        if self.is_ollama_online_sync():
+        # Only probe local Ollama if explicitly requested or Gemini not configured
+        if self.provider == "ollama" and self.is_ollama_online_sync():
             ollama_result = await self._call_ollama_async(prompt, system, temperature)
             if ollama_result:
                 return ollama_result
@@ -206,7 +207,8 @@ class LLMService:
             if gemini_result:
                 return gemini_result
 
-        if self.is_ollama_online_sync():
+        # Only probe local Ollama if explicitly requested or Gemini not configured
+        if self.provider == "ollama" and self.is_ollama_online_sync():
             ollama_result = self._call_ollama_sync(prompt, system, temperature)
             if ollama_result:
                 return ollama_result

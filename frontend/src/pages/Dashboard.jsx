@@ -68,7 +68,11 @@ export const Dashboard = () => {
     setUploading(true);
     setUploadError(null);
     try {
-      await api.uploadDocuments(files);
+      const formData = new FormData();
+      for (const file of files) {
+        formData.append('files', file);
+      }
+      await api.uploadDocuments(formData);
       await fetchDocuments();
       await refreshStatus();
     } catch (err) {

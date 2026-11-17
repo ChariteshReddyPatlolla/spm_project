@@ -10,7 +10,9 @@ class EmbeddingService:
         self.model_name = model_name
         self._st_model = None
         self._cache: Dict[str, List[float]] = {}
-        self._fallback_mode = False
+        # In lightweight/cloud mode (or on Render), use instant deterministic semantic hashing
+        # to avoid downloading 400MB PyTorch models and prevent memory crashes.
+        self._fallback_mode = getattr(settings, "LIGHTWEIGHT_MODE", True)
 
     def _get_model(self):
         if self._st_model is None and not self._fallback_mode:

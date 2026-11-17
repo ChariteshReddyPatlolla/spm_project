@@ -21,22 +21,25 @@ class HybridRetriever:
 
     def _expand_query(self, query: str) -> List[str]:
         """
-        Academic query expansion: adds domain-specific keywords and synonyms
-        to maximize candidate recall for tables, metrics, and architecture.
+        Fast academic query expansion: adds targeted domain terms
+        without multiplying redundant vector searches.
         """
+        if len(query.split()) > 5:
+            return [query]
+
         queries = [query]
         q_lower = query.lower()
 
         if any(w in q_lower for w in ["bleu", "score", "metric", "accuracy", "f1", "result", "performance"]):
-            queries.append(f"{query} experimental results benchmark evaluation table")
-        if any(w in q_lower for w in ["architecture", "scaled dot", "attention", "mechanism", "encoder", "decoder"]):
-            queries.append(f"{query} model architecture multi-head attention formulation")
-        if any(w in q_lower for w in ["dataset", "data", "corpus", "train", "training"]):
-            queries.append(f"{query} pre-training corpus dataset size sentences words")
-        if any(w in q_lower for w in ["compare", "versus", "vs", "difference"]):
-            queries.append(f"{query} methodology architecture comparison results")
+            queries.append(f"{query} experimental results benchmark")
+        elif any(w in q_lower for w in ["architecture", "scaled dot", "attention", "mechanism", "encoder", "decoder"]):
+            queries.append(f"{query} model architecture multi-head")
+        elif any(w in q_lower for w in ["dataset", "data", "corpus", "train", "training"]):
+            queries.append(f"{query} pre-training corpus dataset")
+        elif any(w in q_lower for w in ["compare", "versus", "vs", "difference"]):
+            queries.append(f"{query} methodology comparison")
 
-        return queries
+        return queries[:2]
 
     def retrieve(
         self,

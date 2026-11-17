@@ -14,10 +14,21 @@ export const api = {
   getStatus: () => apiClient.get('/status'),
 
   // Documents
-  uploadDocuments: (formData) =>
-    apiClient.post('/documents/upload', formData, {
+  uploadDocuments: (data) => {
+    let formData = data;
+    if (!(data instanceof FormData)) {
+      formData = new FormData();
+      const filesList = Array.isArray(data)
+        ? data
+        : (data?.target?.files ? Array.from(data.target.files) : (data ? [data] : []));
+      for (const file of filesList) {
+        if (file) formData.append('files', file);
+      }
+    }
+    return apiClient.post('/documents/upload', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
-    }),
+    });
+  },
   getDocuments: () => apiClient.get('/documents'),
   getDocument: (id) => apiClient.get(`/documents/${id}`),
   deleteDocument: (id) => apiClient.delete(`/documents/${id}`),

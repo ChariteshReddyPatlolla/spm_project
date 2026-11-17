@@ -8,7 +8,9 @@ class CrossEncoderReranker:
     def __init__(self, model_name: str = settings.RERANKER_MODEL_NAME):
         self.model_name = model_name
         self._ce_model = None
-        self._fallback_mode = False
+        # In cloud / lightweight mode, use instant lexical-semantic reranking
+        # to prevent downloading 300MB CrossEncoder and eliminate CPU timeouts.
+        self._fallback_mode = getattr(settings, "LIGHTWEIGHT_MODE", True)
 
     def _get_model(self):
         if self._ce_model is None and not self._fallback_mode:
